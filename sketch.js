@@ -39,7 +39,7 @@ function draw() {
     translate(-capture.width / 2, -capture.height / 2);
     
     capture.loadPixels(); // 將影片目前的影格載入到像素陣列中
-    let mosaicSize = 20; // 設定馬賽克區塊的大小 (數值越大，馬賽克越粗糙)
+    let mosaicSize = 300; // 設定馬賽克區塊的大小 (數值越大，馬賽克越粗糙)
     
     noStroke();
     // 透過雙層迴圈，每隔 mosaicSize 取一個像素的顏色並畫出小正方形
