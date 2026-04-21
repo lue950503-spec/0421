@@ -39,7 +39,7 @@ function draw() {
     translate(-capture.width / 2, -capture.height / 2);
     
     capture.loadPixels(); // 將影片目前的影格載入到像素陣列中
-    let mosaicSize = 100; // 建議設為 20~30。300 太大會變成巨大的單色色塊，看不出畫面
+    let mosaicSize = 20; // 建議設為 20~30。300 太大會變成巨大的單色色塊，看不出畫面
     
     // 確保攝影機的像素陣列已經成功載入，避免初始畫面全黑或讀取錯誤
     if (capture.pixels && capture.pixels.length > 0) {
