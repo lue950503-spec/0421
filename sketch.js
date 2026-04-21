@@ -30,8 +30,27 @@ function draw() {
   push();
   translate(width / 2, height / 2); // 將座標原點移動到畫布中心
   scale(-1, 1); // 將 X 軸縮放設為 -1 達成水平翻轉 (鏡像效果)
-  // 將攝影機影像繪製在新的原點 (0, 0) 即可置中顯示
-  image(capture, 0, 0, imgWidth, imgHeight);
+  
+  // 確保攝影機已經有畫面資訊，避免初始載入時 capture.width 為 0 產生錯誤
+  if (capture.width > 0) {
+    // 依據畫布上的目標寬高對影像進行縮放
+    scale(imgWidth / capture.width, imgHeight / capture.height);
+    // 將原點移動到左上角，藉此模擬原本 imageMode(CENTER) 的置中效果
+    translate(-capture.width / 2, -capture.height / 2);
+    
+    capture.loadPixels(); // 將影片目前的影格載入到像素陣列中
+    let mosaicSize = 20; // 設定馬賽克區塊的大小 (數值越大，馬賽克越粗糙)
+    
+    noStroke();
+    // 透過雙層迴圈，每隔 mosaicSize 取一個像素的顏色並畫出小正方形
+    for (let y = 0; y < capture.height; y += mosaicSize) {
+      for (let x = 0; x < capture.width; x += mosaicSize) {
+        let index = (y * capture.width + x) * 4; // 計算在 1D 陣列中的像素索引位置
+        fill(capture.pixels[index], capture.pixels[index + 1], capture.pixels[index + 2]);
+        rect(x, y, mosaicSize, mosaicSize);
+      }
+    }
+  }
   pop(); // 恢復原始的座標系統
   
   // 在 pg 圖層上繪製內容 (這裡以紅色邊框作為範例)
