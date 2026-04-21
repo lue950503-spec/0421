@@ -39,18 +39,16 @@ function draw() {
     translate(-capture.width / 2, -capture.height / 2);
     
     capture.loadPixels(); // 將影片目前的影格載入到像素陣列中
-    let mosaicSize = 20; // 建議設為 20~30。300 太大會變成巨大的單色色塊，看不出畫面
+    let mosaicSize = 20;
     
-    // 確保攝影機的像素陣列已經成功載入，避免初始畫面全黑或讀取錯誤
-    if (capture.pixels && capture.pixels.length > 0) {
-      noStroke();
-      // 透過雙層迴圈，每隔 mosaicSize 取一個像素的顏色並畫出小正方形
-      for (let y = 0; y < capture.height; y += mosaicSize) {
-        for (let x = 0; x < capture.width; x += mosaicSize) {
-          let index = (y * capture.width + x) * 4; // 計算在 1D 陣列中的像素索引位置
-          fill(capture.pixels[index], capture.pixels[index + 1], capture.pixels[index + 2]);
-          rect(x, y, mosaicSize, mosaicSize);
-        }
+    noStroke();
+    // 透過雙層迴圈，每隔 mosaicSize 取一個像素的顏色並畫出小正方形
+    for (let y = 0; y < capture.height; y += mosaicSize) {
+      for (let x = 0; x < capture.width; x += mosaicSize) {
+        // 改用 get(x, y) 抓取顏色，自動處理高解析度螢幕(Retina)像素密度不同的問題
+        let c = capture.get(x, y); 
+        fill(c);
+        rect(x, y, mosaicSize, mosaicSize);
       }
     }
   }
